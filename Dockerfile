@@ -11,17 +11,19 @@ RUN apk --update add python3 git smartmontools tzdata make g++
 RUN rm -rf /var/cache/apk/*
 
 #compile snapraid from source
-RUN wget https://github.com/amadvance/snapraid/releases/download/v$SNAPRAID_VERSION/snapraid-$SNAPRAID_VERSION.tar.gz
-RUN tar xzvf snapraid-$SNAPRAID_VERSION.tar.gz && cd snapraid-$SNAPRAID_VERSION/
-RUN ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --localstatedir=/var
-RUN make
-RUN make check
-RUN make install
-RUN cd .. && rm -rf snapraid*
+RUN wget https://github.com/amadvance/snapraid/releases/download/v$SNAPRAID_VERSION/snapraid-$SNAPRAID_VERSION.tar.gz && \
+    tar xzvf snapraid-$SNAPRAID_VERSION.tar.gz && \
+    cd snapraid-$SNAPRAID_VERSION && \
+    ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --localstatedir=/var && \
+    make && \
+    make check  && \
+    make install  && \
+    cd .. && \
+    rm -rf snapraid*
 
 #fetch and install latest snapraid-runner
-RUN git clone https://github.com/Chronial/snapraid-runner.git /app/snapraid-runner
-RUN chmod +x /app/snapraid-runner/snapraid-runner.py
+RUN git clone https://github.com/Chronial/snapraid-runner.git /app/snapraid-runner && \
+    chmod +x /app/snapraid-runner/snapraid-runner.py
 
 #install crontab
 RUN echo '0 3 * * * /usr/bin/python3 /app/snapraid-runner/snapraid-runner.py -c /config/snapraid-runner.conf' > /etc/crontabs/root
