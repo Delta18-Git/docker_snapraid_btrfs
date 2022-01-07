@@ -1,15 +1,23 @@
 # Snapraid 1.5
 FROM alpine:latest
-ARG SNAPRAID_VERSION=11.5
+ARG SNAPRAID_VERSION=11.6
 # 12.0 has an error see issues (segmentation fault)
-# 11.6 is not in alpine repo
 
-#install neded tools
-RUN apk --update add python3 git smartmontools tzdata
+#install neded tools for compilation
+RUN apk --update add python3 git smartmontools tzdata make g++
 #try installing snapraid from repo
-RUN apk add snapraid=$SNAPRAID_VERSION-r0 --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --allow-untrusted
+#RUN apk add snapraid=$SNAPRAID_VERSION-r0 --update-cache --repository http://dl-cdn.alpinelinux.org/alpine/edge/testing --allow-untrusted
 #clear apk cache
 RUN rm -rf /var/cache/apk/*
+
+#compile snapraid from source
+RUN wget https://github.com/amadvance/snapraid/releases/download/v$SNAPRAID_VERSION/snapraid-$SNAPRAID_VERSION.tar.gz
+RUN tar xzvf snapraid-$SNAPRAID_VERSION.tar.gz && cd snapraid-$SNAPRAID_VERSION/
+RUN ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --localstatedir=/var
+RUN make
+RUN make check
+RUN make install
+RUN cd .. && rm -rf snapraid*
 
 #fetch and install latest snapraid-runner
 RUN git clone https://github.com/Chronial/snapraid-runner.git /app/snapraid-runner
