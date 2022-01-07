@@ -1,36 +1,41 @@
-originally forked from
-https://github.com/linuxserver-archive/docker-snapraid
-https://github.com/xagaba/snapraid
+# Snapraid in Docker  
+originally forked from the following repos, please check them out!  
+https://github.com/linuxserver-archive/docker-snapraid  
+https://github.com/xagaba/snapraid  
 
-This is the Alpine version with Snapraid 11.6 (12 is not stable)
 
-![http://linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png)
+This is container uses the latest alpine container to compile snapraid from source and combines it with the latest snapraid-runner.py script.
+These are the source repos for more info:  
+https://github.com/amadvance/snapraid  
+https://github.com/Chronial/snapraid-runner  
 
-The [LinuxServer.io](https://www.linuxserver.io/) team brings you another quality container release featuring auto-update on startup, easy user mapping and community support. Be sure to checkout our [forums](https://forum.linuxserver.io/index.php) or for real-time support our [IRC](https://www.linuxserver.io/irc/) on freenode at `#linuxserver.io`.
 
-# linuxserver/snapraid
-
-SnapRAID is an application which computes parity across a set of hard drives (usually in JBOD configuration) allowing recovery from drive failure. It is known as a ‘snapshot’ RAID implementation meaning that it is not ‘real-time’ such as mdadm, ZFS or unRAID. It is free and open source under a GPL v3 license. It supports mismatched disk sizes although the largest must be your parity drive and is very well suited to use cases with lots of large, relatively static filesystems such as media collections. This container has been born out of several years of personal SnapRAID usage, I even wrote an article in 2014 about [how to setup SnapRAID on Arch](https://www.linuxserver.io/index.php/2014/09/06/how-to-setup-snapraid-on-arch-linux/). There's a lot of useful information in this article so I won't repeat it here!
-
-Use is made of the [snapraid-runner](https://github.com/Chronial/snapraid-runner) project, a simple Python app which provides the following features:
-
-* Runs diff before sync to see how many files were deleted and aborts if that number exceeds a set threshold
-* Can create a size-limited rotated logfile
-* Can send notification emails after each run or only for failures
-* Can run scrub after sync
 
 ## Usage
 
-```
-docker create -d \
-  -v /mnt:/mnt \
-  -v <local-configs-path-on-host>/snapraid:/config \
-  -e PGID=1001 -e PUID=1001 \
-  --name snapraid \
-  linuxserver/snapraid
-```
-
 This container is configured using two files `snapraid.conf` and `snapraid-runner.conf`. These should both be placed into your hosts local config directory to be mounted as a volume **before** the container is executed for the first time.
+
+```
+version: '3.8'
+
+services:
+  app:
+    image: fred92/snapraid:master
+    restart: always
+    privileged: true
+    volumes:
+      - type: bind
+        source: /dev/disk
+        target: /dev/disk
+      - /mnt:/mnt
+      - config:/config
+    environment:
+       - PGID=1000
+       - GUID=1000
+
+volumes:
+  config:
+```
 
 **Parameters**
 * `-v /mnt` - The location of your data disks, a good convention is `/mnt/disk*` for your data drives
@@ -61,14 +66,3 @@ Part of what makes our containers work so well is by allowing you to specify you
 SnapRAID has a comprehensive manual available [here](http://www.snapraid.it/). Any SnapRAID command can be executed from the host easily using `docker exec -it <container-name> <command>`, for example `docker exec -it snapraid snapraid diff`.
 
 Note that by default snapraid-runner is set to run via cron at 00.30 daily. Tips and tricks on configuration snapraid-runner can be found on our [forums](https://forum.linuxserver.io/index.php?threads/snapraid-runner-script-email-issue.97).
-
-
-## Updates
-
-* Upgrade to the latest version simply `docker restart snapraid`.
-* To monitor the logs of the container in realtime `docker logs -f snapraid`.
-
-## Versions
-
-+ **10.11.2015** Initial release - IronicBadger <ironicbadger@linuxserver.io>
-
