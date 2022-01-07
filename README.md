@@ -1,5 +1,8 @@
+originally forked from
+https://github.com/linuxserver-archive/docker-snapraid
+https://github.com/xagaba/snapraid
 
-This is the Alpine version with Snapraid 11.5
+This is the Alpine version with Snapraid 11.6 (12 is not stable)
 
 ![http://linuxserver.io](https://raw.githubusercontent.com/linuxserver/docker-templates/master/linuxserver.io/img/linuxserver_medium.png)
 
