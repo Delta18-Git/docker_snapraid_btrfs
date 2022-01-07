@@ -1,7 +1,8 @@
 # Snapraid 1.5
 FROM alpine:latest
-ARG SNAPRAID_VERSION=11.6
-# 12.0 has an error see issues
+ARG SNAPRAID_VERSION=11.5
+# 12.0 has an error see issues (segmentation fault)
+# 11.6 is not in alpine repo
 
 #install neded tools
 RUN apk --update add python3 git smartmontools tzdata
