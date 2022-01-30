@@ -32,6 +32,7 @@ services:
     environment:
        - PGID=1000
        - GUID=1000
+       - CRON_SCHEDULE=0 3 * * *
 
 volumes:
   config:
