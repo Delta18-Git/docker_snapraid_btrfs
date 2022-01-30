@@ -27,7 +27,7 @@ RUN git clone https://github.com/Chronial/snapraid-runner.git /app/snapraid-runn
     chmod +x /app/snapraid-runner/snapraid-runner.py
 
 #install crontab
-RUN echo '0 3 * * * /usr/bin/python3 /app/snapraid-runner/snapraid-runner.py -c /config/snapraid-runner.conf' > /etc/crontabs/root
+#RUN echo '0 3 * * * /usr/bin/python3 /app/snapraid-runner/snapraid-runner.py -c /config/snapraid-runner.conf' > /etc/crontabs/root
 #mount config
 VOLUME /mnt /config
 
