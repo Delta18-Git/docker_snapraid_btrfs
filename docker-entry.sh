@@ -27,7 +27,7 @@ fi
 if [[ -z "${CRON_SCHEDULE}" ]]; then
   echo "No cron schedule found."
 else
-  echo '$CRON_SCHEDULE /usr/bin/python3 /app/snapraid-runner/snapraid-runner.py -c /config/snapraid-runner.conf' > /etc/crontabs/root
+  echo "${CRON_SCHEDULE} /usr/bin/python3 /app/snapraid-runner/snapraid-runner.py -c /config/snapraid-runner.conf" > /etc/crontabs/root
 fi
 
 
