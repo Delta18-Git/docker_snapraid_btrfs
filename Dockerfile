@@ -17,7 +17,7 @@ RUN wget https://github.com/amadvance/snapraid/releases/download/v$SNAPRAID_VERS
     cd snapraid-$SNAPRAID_VERSION && \
     ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --localstatedir=/var && \
     make && \
-    make check  && \
+    #make check  && \
     make install  && \
     cd .. && \
     rm -rf snapraid*
