@@ -1,6 +1,7 @@
 # Snapraid 1.5
 FROM alpine:latest
-ARG SNAPRAID_VERSION=11.6
+ARG SNAPRAID_VERSION=12.1
+ENV CRON_SCHEDULE=0 3 * * *
 # 12.0 has an error see issues (segmentation fault)
 
 #install neded tools for compilation
