@@ -23,6 +23,7 @@ services:
       - /mnt:/mnt
       - config:/config
     environment:
+       - TZ=Europe/Berlin
        - PGID=1000
        - GUID=1000
        - CRON_SCHEDULE=0 3 * * *
@@ -36,6 +37,7 @@ volumes:
 * `-v /config` - The location of the Snapraid and SnapRAID-runner configurations
 * `-e PGID` for GroupID - see below for explanation
 * `-e PUID` for UserID - see below for explanation
+* `-e CRON_SCHEDULE=0 3 * * *` here you can set the schedule when the snapraid runner is started. (see https://crontab.guru/)
 
 
 ### Detecting move operations
