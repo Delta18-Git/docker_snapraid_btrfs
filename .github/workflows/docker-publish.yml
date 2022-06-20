@@ -5,24 +5,11 @@
 
 name: Publish Docker image
 
-on:
-  push:
-    branches:
-      - 'apprise'
-    tags:
-      - 'v*'
-  pull_request:
-    branches:
-      - 'master'
+on: 
+  workflow_dispatch:
 
-#  schedule:
-#    - cron: '25 10 * * *'
-#  push:
-#    branches: [ master ]
-#    # Publish semver tags as releases.
-#    tags: [ 'v*.*.*' ]
-#  pull_request:
-#    branches: [ master ]
+  schedule:
+    - cron:  '0 0 * * 0'
 
 env:
   # Use docker.io for Docker Hub if empty
