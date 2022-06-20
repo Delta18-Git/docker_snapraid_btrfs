@@ -26,6 +26,10 @@ RUN wget https://github.com/amadvance/snapraid/releases/download/v$SNAPRAID_VERS
 RUN git clone https://github.com/fightforlife/snapraid-runner.git /app/snapraid-runner && \
     chmod +x /app/snapraid-runner/snapraid-runner.py
 
+#install apprise
+RUN python3 -m ensurepip --upgrade
+RUN pip3 install apprise
+
 #install crontab
 #RUN echo '0 3 * * * /usr/bin/python3 /app/snapraid-runner/snapraid-runner.py -c /config/snapraid-runner.conf' > /etc/crontabs/root
 #mount config
