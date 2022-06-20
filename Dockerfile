@@ -1,4 +1,4 @@
-# Snapraid 1.5
+# Snapraid
 FROM alpine:latest
 ARG SNAPRAID_VERSION=12.1
 ENV CRON_SCHEDULE=""
@@ -23,7 +23,7 @@ RUN wget https://github.com/amadvance/snapraid/releases/download/v$SNAPRAID_VERS
     rm -rf snapraid*
 
 #fetch and install latest snapraid-runner
-RUN git clone https://github.com/Chronial/snapraid-runner.git /app/snapraid-runner && \
+RUN git clone https://github.com/fightforlife/snapraid-runner.git /app/snapraid-runner && \
     chmod +x /app/snapraid-runner/snapraid-runner.py
 
 #install crontab
