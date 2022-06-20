@@ -4,6 +4,13 @@ These are the source repos for more info:
 https://github.com/amadvance/snapraid  
 https://github.com/fightforlife/snapraid-runner  
 
+## latest changes
+- v12.1.1: Replace email notifications with Apprise, see https://github.com/caronc/apprise/wiki  (set url in snapraid-runner.conf)
+- v12.1: Introduce CRON_SCHEDULE and Update to Snapraid 12.1
+- v11.6: initial release
+
+
+
 ## Usage
 This container is configured using two files `snapraid.conf` and `snapraid-runner.conf`. These files neet to be mounted into the container at `/config` before the container starts.
 
@@ -13,7 +20,7 @@ version: '3.8'
 
 services:
   app:
-    image: fred92/snapraid:master
+    image: fred92/snapraid:v12.1.1
     restart: always
     privileged: true
     volumes:
@@ -79,7 +86,7 @@ enabled = true
 sendon = success,error
 ; set to false to get full programm output
 short = true
-; Python Apprise url.
+; Python Apprise url. see https://github.com/caronc/apprise/wiki
 url = discord://ID/Token
 
 [scrub]
