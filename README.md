@@ -1,10 +1,12 @@
 # Snapraid in Docker  
-This is container uses the latest alpine to compile snapraid from source and combines it with a modified snapraid-runner script for additional functionality.
+This is container uses the latest alpine to compile snapraid from source (latest release) and combines it with a modified snapraid-runner script for additional functionality.
 These are the source repos for more info:  
 https://github.com/amadvance/snapraid  
 https://github.com/fightforlife/snapraid-runner  
 
 ## latest changes
+- Removing versioning bound to Snapraid version. New master tag will always include the latest snapraid release on latest alpine. Build starts every 2 days on midnight. Older versions will be DEPRECATED.
+
 - v12.1.1: Replace email notifications with Apprise, see https://github.com/caronc/apprise/wiki  (set url in snapraid-runner.conf)
 - v12.1: Introduce CRON_SCHEDULE and Update to Snapraid 12.1
 - v11.6: initial release
@@ -20,7 +22,7 @@ version: '3.8'
 
 services:
   app:
-    image: fred92/snapraid:v12.1.1
+    image: fred92/snapraid:master
     restart: always
     privileged: true
     volumes:
