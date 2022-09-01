@@ -14,10 +14,10 @@ RUN curl -s https://api.github.com/repos/amadvance/snapraid/releases/latest \
     | wget -qi -
 #extract    
 RUN tar xzvf snapraid-*.tar.gz && \
-    rm snapraid-*.tar.gz && \
-    cd snapraid-*
+    rm snapraid-*.tar.gz
 #compile and check
-RUN ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --localstatedir=/var && \
+RUN cd snapraid-* && \
+    ./configure --prefix=/usr --sysconfdir=/etc --mandir=/usr/share/man --localstatedir=/var && \
     make && \
     make check  && \
     make install  && \
