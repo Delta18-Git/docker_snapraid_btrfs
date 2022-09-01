@@ -3,7 +3,7 @@ FROM alpine:latest
 ENV CRON_SCHEDULE=""
 
 #install neded tools for compilation
-RUN apk --update add python3 git smartmontools tzdata make g++
+RUN apk --update add python3 git smartmontools tzdata make g++ curl grep wget
 RUN rm -rf /var/cache/apk/*
 
 #download latest snapraid
