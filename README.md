@@ -22,7 +22,7 @@ version: '3.8'
 
 services:
   app:
-    image: fred92/snapraid:master
+    image: ghcr.io/fightforlife/docker_snapraid:master
     restart: always
     privileged: true
     volumes:
