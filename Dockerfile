@@ -3,7 +3,8 @@ FROM alpine:latest
 ENV CRON_SCHEDULE=""
 
 #install neded tools for compilation
-RUN apk --update add python3 git smartmontools tzdata make g++ curl grep wget
+RUN apk --update add python3 git smartmontools tzdata make g++ curl grep wget py3-pip 
+RUN apk add apprise --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
 RUN rm -rf /var/cache/apk/*
 
 #download latest snapraid
@@ -27,10 +28,6 @@ RUN cd snapraid-* && \
 #fetch and install latest snapraid-runner
 RUN git clone https://github.com/fightforlife/snapraid-runner.git /app/snapraid-runner && \
     chmod +x /app/snapraid-runner/snapraid-runner.py
-
-#install apprise
-RUN python3 -m ensurepip --upgrade
-RUN pip3 install apprise
 
 #mount config
 VOLUME /mnt /config
