@@ -1,8 +1,9 @@
-# Snapraid in Docker  
+# Snapraid in Docker
 This is container uses the latest alpine to compile snapraid from source (latest release) and combines it with a modified snapraid-runner script for additional functionality.
-These are the source repos for more info:  
-https://github.com/amadvance/snapraid  
-https://github.com/fightforlife/snapraid-runner  
+These are the source repos for more info:
+https://github.com/amadvance/snapraid
+https://github.com/automorphism88/snapraid-btrfs
+https://github.com/fmoledina/snapraid-btrfs-runner
 
 ## latest changes
 - FORK: Removed apprise, add snapraid-btrfs support
@@ -15,15 +16,14 @@ https://github.com/fightforlife/snapraid-runner
 
 
 ## Usage
-This container is configured using two files `snapraid.conf` and `snapraid-runner.conf`. These files neet to be mounted into the container at `/config` before the container starts.
+This container is configured using two files `snapraid.conf` and `snapraid-btrfs-runner.conf`. These files neet to be mounted into the container at `/config` before the container starts. The snapper configs also must be present at `/config/snapper-configs`
 
 ### Docker Compose example
 ```
-version: '3.8'
 
 services:
   app:
-    image: ghcr.io/fightforlife/docker_snapraid:master
+    image: ghcr.io/Delta18-Git/docker_snapraid_btrfs:master
     restart: always
     privileged: true
     volumes:
@@ -61,43 +61,72 @@ The `PGID` and `PUID` values set the user / group you'd like your container to '
 
 
 ## Setting up the application
-SnapRAID has a comprehensive manual available [here](http://www.snapraid.it/). Any SnapRAID command can be executed from the host easily using `docker exec -it <container-name> <command>`, for example `docker exec -it snapraid snapraid diff`.
+SnapRAID has a comprehensive manual available [here](http://www.snapraid.it/). Any SnapRAID command can be executed from the host easily using `docker exec -it <container-name> <command>`, for example `docker exec -it snapraid snapraid-btrfs diff`.
 Tips and tricks on configuration snapraid-runner can be found on our [forums](https://forum.linuxserver.io/index.php?threads/snapraid-runner-script-email-issue.97).
 
 
-## snapraid-runner.conf example
+## snapraid-btrfs-runner.conf example
 ```
+[snapraid-btrfs]
+; path to the snapraid-btrfs executable (e.g. /usr/bin/snapraid-btrfs)
+executable = /app/snapraid-btrfs/snapraid-btrfs
+; optional: specify snapper-configs and/or snapper-configs-file as specified in snapraid-btrfs
+; only one instance of each can be specified in this config
+snapper-configs = /etc/snapper/configs/
+snapper-configs-file =
+; specify whether snapraid-btrfs should run the pool command after the sync, and optionally specify pool-dir
+pool = false
+pool-dir =
+; specify whether snapraid-btrfs-runner should automatically clean up all but the last snapraid-btrfs sync snapshot after a successful sync
+cleanup = true
+
+[snapper]
+; path to snapper executable (e.g. /usr/bin/snapper)
+executable = /usr/bin/snapper
+
 [snapraid]
-; path to the snapraid executable (e.g. /bin/snapraid)
+; path to the snapraid executable (e.g. /usr/bin/snapraid)
 executable = /usr/bin/snapraid
 ; path to the snapraid config to be used
 config = /config/snapraid.conf
 ; abort operation if there are more deletes than this, set to -1 to disable
-deletethreshold = 200
+deletethreshold = 40
 ; if you want touch to be ran each time
-touch = true
+touch = false
 
 [logging]
 ; logfile to write to, leave empty to disable
-file = snapraid-runner.log
+file = snapraid.log
 ; maximum logfile size in KiB, leave empty for infinite
 maxsize = 5000
 
-[notification]
-enabled = true
-; when to send a notificariton on, comma-separated list of [success, error]
+[email]
+; when to send an email, comma-separated list of [success, error]
 sendon = success,error
-; set to false to get full programm output
+; set to false to get full programm output via email
 short = true
-; Python Apprise url. see https://github.com/caronc/apprise/wiki
-url = discord://ID/Token
+subject = [SnapRAID] Status Report:
+from =
+to =
+; maximum email size in KiB
+maxsize = 500
+
+[smtp]
+host =
+; leave empty for default port
+port =
+; set to "true" to activate
+ssl = false
+tls = false
+user =
+password =
 
 [scrub]
 ; set to true to run scrub after sync
-enabled = true
-; scrub plan - either a percentage or one of [bad, new, full]
+enabled = false
+; plan can be 0-100 percent, new, bad, or full
 plan = 12
-; minimum block age (in days) for scrubbing. Only used with percentage plans
+; only used for percent scrub plan
 older-than = 10
 ```
 
