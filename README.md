@@ -5,7 +5,7 @@ https://github.com/amadvance/snapraid
 https://github.com/fightforlife/snapraid-runner  
 
 ## latest changes
-- Removing versioning bound to Snapraid version. New master tag will always include the latest snapraid release on latest alpine. Build starts every 2 days on midnight. Older versions will be DEPRECATED.
+- Removing versioning bound to Snapraid version. New master tag will always include the latest snapraid release on latest alpine. Build starts every 4 months on the 22nd at midnight. Older versions will be DEPRECATED.
 
 - v12.1.1: Replace email notifications with Apprise, see https://github.com/caronc/apprise/wiki  (set url in snapraid-runner.conf)
 - v12.1: Introduce CRON_SCHEDULE and Update to Snapraid 12.1
