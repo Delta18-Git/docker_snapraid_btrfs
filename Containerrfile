@@ -4,7 +4,7 @@ ENV CRON_SCHEDULE=""
 
 #install neded tools for compilation
 RUN apk --update add python3 git smartmontools tzdata make g++ curl grep wget py3-pip 
-RUN apk add apprise --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
+# RUN apk add apprise --repository=http://dl-cdn.alpinelinux.org/alpine/edge/testing/
 RUN rm -rf /var/cache/apk/*
 
 #download latest snapraid
@@ -25,9 +25,12 @@ RUN cd snapraid-* && \
     cd .. && \
     rm -rf snapraid-*
 
+RUN git clone https://github.com/D34DC3N73R/snapraid-btrfs.git /app/snapraid-btrfs && \
+    chmod +x /app/snapraid-btrfs/snapraid-btrfs
+
 #fetch and install latest snapraid-runner
-RUN git clone https://github.com/fightforlife/snapraid-runner.git /app/snapraid-runner && \
-    chmod +x /app/snapraid-runner/snapraid-runner.py
+RUN git clone https://github.com/fmoledina/snapraid-btrfs-runner.git /app/snapraid-btrfs-runner && \
+    chmod +x /app/snapraid-btrfs-runner/snapraid-btrfs-runner.py
 
 #mount config
 VOLUME /mnt /config
