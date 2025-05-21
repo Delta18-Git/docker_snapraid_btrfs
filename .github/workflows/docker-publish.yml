@@ -8,9 +8,9 @@ name: Publish Docker image
 on: 
   #for manual start
   workflow_dispatch:
-  #every second day
-  #schedule:
-  #  - cron:  '0 0 */2 * 0'
+  #on the 22nd of every fourth month
+  schedule:
+    - cron:  '0 0 22 */4 *'
 
 jobs:
   push_to_registries:
